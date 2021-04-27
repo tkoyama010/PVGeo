@@ -17,6 +17,13 @@ import sys
 import shutil
 import faulthandler
 
+try:
+    # When translating the docs to another language, this variable is set
+    # elsewhere, so if it is not set, set it to a suitable default.
+    basedir
+except NameError:
+    basedir = os.path.dirname(os.path.abspath(__file__))
+
 faulthandler.enable()
 
 # Add PVGeo to the path
@@ -71,7 +78,7 @@ extra = """
 # Automatically generate documentaion pages
 Generator().DocumentPackages(
     [PVGeo, pvmacros],
-    index_base='../index_base.rst',
+    index_base=os.path.join(basedir, '../index_base.rst'),
     showprivate=True,
     notify=False,
     intro_pages=[
@@ -317,7 +324,7 @@ from sphinx_gallery.sorting import FileNameSortKey
 sphinx_gallery_conf = {
     # path to your examples scripts
     "examples_dirs": [
-        "../../examples/",
+        os.path.join(basedir, "../../examples/"),
     ],
     # path where to save gallery generated examples
     "gallery_dirs": ["examples"],
